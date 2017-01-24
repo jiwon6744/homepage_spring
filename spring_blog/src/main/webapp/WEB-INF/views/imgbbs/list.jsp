@@ -83,7 +83,7 @@
 							<td class="table-bordered td text-align-c">${dto.no }</td>
 							<td class="table-bordered td text-align-c">
 							<c:forEach begin="1" end="${dto.indent }">
-									<c:out value="&nbsp;&nbsp;" escapeXml="false"></c:out>
+									<c:out value="&nbsp;&nbsp;&nbsp;" escapeXml="false"></c:out>
 								</c:forEach> <c:if test="${dto.indent > 0 }">
 									<img src="${pageContext.request.contextPath }/images/reply-back.png" width="5%">
 								</c:if> 
