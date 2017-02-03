@@ -44,8 +44,8 @@
 					<option value="title"
 				<c:if test="${col=='title'}">selected='selected'</c:if>>
 				제목</option>
-					<option value="cotent"
-				<c:if test="${col=='cotent'}">selected='selected'</c:if>>
+					<option value="content"
+				<c:if test="${col=='content'}">selected='selected'</c:if>>
 				내용</option>
 					<option value="total">전체출력</option>
 				</select> <input type="text" name="word" value="${word }" />

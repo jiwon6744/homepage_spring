@@ -20,6 +20,7 @@ import spring.utility.blog.DBOpen;
 public class MemoDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+
 	public int total(String col, String word) {
 		Map map = new HashMap();
 		map.put("col", col);
@@ -28,140 +29,43 @@ public class MemoDAO {
 	}
 
 	public void upViewcnt(int memono) {
-		Connection con = DBOpen.open();
-		PreparedStatement pstmt = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append(" UPDATE memo ");
-		sql.append(" SET viewcnt = viewcnt + 1 ");
-		sql.append(" WHERE memono = ? ");
-
-		try {
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setInt(1, memono);
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBClose.close(con, pstmt);
-		}
+		sqlSession.update("memo.upViewcnt", memono);
 	}
 
 	public boolean delete(int memono) {
 		boolean flag = false;
-		Connection con = DBOpen.open();
-		PreparedStatement pstmt = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append(" DELETE FROM memo ");
-		sql.append(" WHERE memono = ? ");
-		try {
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setInt(1, memono);
-
-			int cnt = pstmt.executeUpdate();
-			if (cnt > 0)
-				flag = true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBClose.close(con, pstmt);
+		int cnt = sqlSession.delete("memo.delete", memono);
+		if(cnt > 0 ){
+			flag = true;
 		}
 		return flag;
 	}
 
 	public boolean update(MemoDTO dto) {
 		boolean flag = false;
-		Connection con = DBOpen.open();
-		PreparedStatement pstmt = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append(" UPDATE memo ");
-		sql.append(" SET title = ?, content = ? ");
-		sql.append(" WHERE memono = ? ");
-
-		try {
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(1, dto.getTitle());
-			pstmt.setString(2, dto.getContent());
-			pstmt.setInt(3, dto.getMemono());
-
-			int cnt = pstmt.executeUpdate();
-
-			if (cnt > 0)
-				flag = true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBClose.close(con, pstmt);
+		int cnt = sqlSession.update("memo.update", dto);
+		if(cnt > 0){
+			flag = true;
 		}
 		return flag;
 	}
 
 	public boolean create(MemoDTO dto) {
 		boolean flag = false;
-		Connection con = DBOpen.open();
-		PreparedStatement pstmt = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append(" INSERT INTO memo(memono, title, content, wdate) ");
-		sql.append(" VALUES(memo_seq.nextval, ?, ?, sysdate) ");
-
-		try {
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(1, dto.getTitle());
-			pstmt.setString(2, dto.getContent());
-
-			int cnt = pstmt.executeUpdate();
-
-			if (cnt > 0) {
-				flag = true;
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBClose.close(con, pstmt);
+		int cnt = sqlSession.insert("memo.create", dto);
+		if (cnt > 0) {
+			flag = true;
 		}
-
 		return flag;
 	}
 
 	public MemoDTO read(int memono) {
-		MemoDTO dto = null;
-		Connection con = DBOpen.open();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT memono, title, content, to_char(wdate,'yyyy-mm-dd') wdate, viewcnt FROM memo ");
-		sql.append(" WHERE memono = ? ");
-
-		try {
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setInt(1, memono);
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				dto = new MemoDTO();
-				dto.setMemono(rs.getInt("memono"));
-				dto.setTitle(rs.getString("title"));
-				dto.setContent(rs.getString("content"));
-				dto.setWdate(rs.getString("wdate"));
-				dto.setViewcnt(rs.getInt("viewcnt"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBClose.close(con, pstmt, rs);
-		}
-		return dto;
+		return sqlSession.selectOne("memo.read", memono);
 	}
 
 	public List<MemoDTO> list(Map map) {
-		
+
 		return sqlSession.selectList("memo.list", map);
-		
+
 	}
 }
