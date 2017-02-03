@@ -9,19 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.SynchronousQueue;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import spring.utility.blog.DBClose;
 import spring.utility.blog.DBOpen;
 
 @Repository
-public class ImgbbsDAO {
-	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
-	
+public class ImgbbsDAO_old {
 	public List imgRead(int no) {
 		List list = new ArrayList();
 		Connection con = DBOpen.open();
