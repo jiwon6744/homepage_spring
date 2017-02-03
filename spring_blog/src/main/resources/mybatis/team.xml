@@ -3,60 +3,72 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="memo">
+<mapper namespace="team">
 	<delete id="delete" parameterType="int">
-		DELETE memo
-		WHERE memono = #{memono}
+		DELETE teamInfo
+		WHERE teamno = #{teamno}
 	</delete>
-	<update id="update" parameterType="MemoDTO">
-		UPDATE memo
-		SET title = #{title}, content = #{content}
-		WHERE memono = #{memono}
+	<update id="update" parameterType="TeamDTO">
+		UPDATE teamInfo
+		<set>
+			phone = #{phone}, zipcode = #{zipcode}, address1 = #{address1},
+			address2 = #{address2}, skill = #{skillstr}, hobby = #{hobby},
+			<if test="filename!=''">
+			filename = #{filename}
+			</if>
+		</set>
+		WHERE teamno = #{teamno}
 	</update>
-	<update id="upViewcnt" parameterType="int">
-		UPDATE memo
-		SET viewcnt = viewcnt + 1
-		WHERE memono = #{memono}
-	</update>
-	<select id="read" parameterType="int" resultType="MemoDTO">
-		SELECT memono, title, content, to_char(wdate,'yyyy-mm-dd') wdate, viewcnt FROM memo
-		WHERE memono = #{memono}
-	</select>
-	<insert id="create" parameterType="MemoDTO">
-		INSERT INTO memo(memono, title, content, wdate) 
-		values(memo_seq.nextval, #{title}, #{content}, sysdate)
+	<insert id="create" parameterType="TeamDTO">
+		INSERT INTO teamInfo(teamno, name, gender, phone, zipcode, address1, address2, skill, hobby, filename)
+		VALUES ((SELECT NVL(MAX(teamno),0)+1 FROM teamInfo),#{name}, #{gender}, #{phone}, #{zipcode}, #{address1}, #{address2}
+		, #{skillstr}, #{hobby}, #{filename})
 	</insert>
-	<select id="total" parameterType="Map" resultType="int">
-		select count(*) FROM memo
-			<where>
-				<if test="col=='title'">
-					title like '%'||#{word}||'%'
-				</if>
-				<if test="col=='content'">
-					content like '%'||#{word}||'%'
-				</if>
-			</where>
+	<select id="read" parameterType="int" resultType="TeamDTO">
+		SELECT teamno, name, gender, phone, zipcode, address1, address2, skill as skillstr, hobby, filename FROM teamInfo
+		WHERE teamno = #{teamno}
 	</select>
-	<select id="list" parameterType="Map" resultType="memoDTO">
-		SELECT memono, title, to_char(wdate, 'yyyy-mm-dd') wdate, viewcnt, r
-		FROM(                                                            
-			SELECT memono, title, wdate, viewcnt, rownum r               
-			FROM(                                                   
-				SELECT memono, title, wdate, viewcnt                     
-				FROM memo
+	<select id="total" parameterType="Map" resultType="int">
+	select count(*) FROM teamInfo
+	<where>
+		<choose>
+			<when test="col=='name'">
+				name like '%'||#{word}||'%'
+			</when>
+			<when test="col=='phone'">
+				phone like '%'||#{word}||'%'
+			</when>
+			<when test="col=='skill'">
+				skill like '%'||#{word}||'%'
+			</when>
+		</choose>
+	</where> 
+	</select>
+	<select id="list" parameterType="Map" resultType="TeamDTO">
+		SELECT teamno, name, phone, skill as skillstr, filename, r       
+		FROM(                                     
+			SELECT teamno, name, phone, skill, filename, rownum r
+			FROM(                                          
+				SELECT teamno, name, phone, skill, filename
+				FROM teamInfo
 				<where>
-					<if test="col=='title'">
-						title like '%'||#{word}||'%'
-					</if>
-					<if test="col=='content'">
-						content like '%'||#{word}||'%'
-					</if>
-				</where>
-				ORDER BY memono DESC
+					<choose>
+						<when test="col=='name'">
+							name like '%'||#{word}||'%'
+						</when>
+						<when test="col=='phone'">
+							phone like '%'||#{word}||'%'
+						</when>
+						<when test="col=='skill'">
+							skill like '%'||#{word}||'%'n
+						</when>
+					</choose>
+				</where> 
+				order by teamno desc
 				)
 			)
-			<![CDATA[
-			WHERE r >= #{sno} and r <= #{eno}
-			]]>
+		<![CDATA[
+		where r >= #{sno} and r <= #{eno}
+		]]>                 
 	</select>
 </mapper>
