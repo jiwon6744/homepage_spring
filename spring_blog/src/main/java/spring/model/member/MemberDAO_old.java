@@ -5,22 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import spring.utility.blog.DBClose;
 import spring.utility.blog.DBOpen;
 
 @Repository
-public class MemberDAO {
-
-	@Autowired
-	private SqlSessionTemplate sqlSession;
+public class MemberDAO_old {
 
 	public boolean create(MemberDTO dto) {
 		boolean flag = false;
@@ -377,17 +371,56 @@ public class MemberDAO {
 
 	public boolean loginCheck(String id, String pw) {
 		boolean flag = false;
-		Map map = new HashMap();
-		map.put("id", id);
-		map.put("pw", pw);
-		int cnt = sqlSession.selectOne("member.loginCheck", map);
-		if (cnt > 0) {
-			flag = true;
+		Connection con = DBOpen.open();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT COUNT(*) FROM member ");
+		sql.append(" WHERE id = ? ");
+		sql.append(" AND passwd = ? ");
+		try {
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int cnt = rs.getInt(1);
+				if (cnt > 0)
+					flag = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBClose.close(con, pstmt, rs);
 		}
 		return flag;
 	}
 
 	public String getGrade(String id) {
-		return sqlSession.selectOne("member.getGrade", id);
+		String grade = null;
+		Connection con = DBOpen.open();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT grade FROM member ");
+		sql.append(" WHERE id = ? ");
+		try {
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				grade = rs.getString("grade");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBClose.close(con, pstmt, rs);
+		}
+		return grade;
 	}
 }
