@@ -4,6 +4,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="address">
+	<delete id="delete" parameterType="int">
+		DELETE address
+		WHERE no = #{no}
+	</delete>
+	<update id="update" parameterType="AddressDTO">
+		UPDATE address
+		SET phone = #{phone}, zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}
+		WHERE no = #{no}
+	</update>
 	<insert id="create" parameterType="AddressDTO">
 		INSERT INTO address(no, name, phone, zipcode, address1, address2, wdate)            
 		VALUES ((SELECT NVL(max(no),0)+1 FROM address), #{name}, #{phone}, #{zipcode}, #{address1}, #{address2}, sysdate)

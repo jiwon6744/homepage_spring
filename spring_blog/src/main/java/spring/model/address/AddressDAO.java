@@ -37,50 +37,18 @@ public class AddressDAO {
 
 	public boolean update(AddressDTO dto) {
 		boolean flag = false;
-		Connection con = DBOpen.open();
-		PreparedStatement pstmt = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append(" UPDATE address ");
-		sql.append(" SET phone = ?, zipcode = ?, address1 = ?, address2 = ? ");
-		sql.append(" WHERE no = ? ");
-		try {
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(1, dto.getPhone());
-			pstmt.setString(2, dto.getZipcode());
-			pstmt.setString(3, dto.getAddress1());
-			pstmt.setString(4, dto.getAddress2());
-			pstmt.setInt(5, dto.getNo());
-			int cnt = pstmt.executeUpdate();
-			if (cnt > 0)
-				flag = true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBClose.close(con, pstmt);
+		int cnt = sqlSession.update("address.update", dto);
+		if(cnt > 0){
+			flag = true;
 		}
 		return flag;
 	}
 
 	public boolean delete(int no) {
 		boolean flag = false;
-		AddressDTO dto = null;
-		Connection con = DBOpen.open();
-		PreparedStatement pstmt = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append(" DELETE FROM address ");
-		sql.append(" WHERE no = ? ");
-		try {
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setInt(1, no);
-			int cnt = pstmt.executeUpdate();
-			if (cnt > 0)
-				flag = true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			DBClose.close(con, pstmt);
+		int cnt = sqlSession.delete("address.delete",no);
+		if(cnt > 0){
+			flag = true;
 		}
 		return flag;
 	}
