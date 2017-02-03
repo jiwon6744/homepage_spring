@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="address">
+	<insert id="create" parameterType="AddressDTO">
+		INSERT INTO address(no, name, phone, zipcode, address1, address2, wdate)            
+		VALUES ((SELECT NVL(max(no),0)+1 FROM address), #{name}, #{phone}, #{zipcode}, #{address1}, #{address2}, sysdate)
+	</insert>
+	<select id="total" parameterType="Map" resultType="int">
+		SELECT count(*) FROM address
+		<where>
+			<choose>
+			<when test="col=='name'">
+				name LIKE '%'||#{word}||'%'
+			</when>
+			<when test="col=='phone'">
+				phone LIKE '%'||#{wordS}||'%'
+			</when>
+			<when test="col=='zipcode'">
+				zipcode LIKE '%'||#{word}||'%'
+			</when>
+			</choose>
+		</where>   
+	</select>
+	<select id="read" parameterType="int" resultType="AddressDTO">
+		SELECT * FROM address
+		WHERE no = #{no}
+	</select>
+	<select id="list" parameterType="Map" resultType="AddressDTO">
+		SELECT no, name, phone, to_char(wdate, 'yyyy-mm-dd') wdate, r
+		FROM(                                                    
+			SELECT no, name, phone, wdate, rownum r                
+			FROM(                                               
+				SELECT no, name, phone, wdate                    
+				FROM address
+				<where>
+					<choose>
+					<when test="col=='name'">
+						name LIKE '%'||#{word}||'%'
+					</when>
+					<when test="col=='phone'">
+						phone LIKE '%'||#{word}||'%'
+					</when>
+					<when test="col=='zipcode'">
+						zipcode LIKE '%'||#{word}||'%'
+					</when>
+					</choose>
+				</where>                          
+					ORDER BY no desc                              
+					)                                               
+				)
+				<![CDATA[
+				WHERE r >=#{sno} and r <= #{eno}
+				]]>                            
+	</select>
+</mapper>

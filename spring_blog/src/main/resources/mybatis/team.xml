@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							phone like '%'||#{word}||'%'
 						</when>
 						<when test="col=='skill'">
-							skill like '%'||#{word}||'%'n
+							skill like '%'||#{word}||'%'
 						</when>
 					</choose>
 				</where> 
