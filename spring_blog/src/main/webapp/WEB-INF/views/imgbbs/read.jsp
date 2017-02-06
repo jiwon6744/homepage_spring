@@ -106,8 +106,7 @@
 				<TD class="table-bordered td">${dto.title}</TD>
 			</TR>
 			<TR>
-				<TH class="table-bordered th">내용</TH>
-				<TD class="table-bordered td">${dto.content}</TD>
+				<TD colspan="2" class="table-bordered td">${dto.content}</TD>
 			</TR>
 			<TR>
 				<TH class="table-bordered th">성명</TH>

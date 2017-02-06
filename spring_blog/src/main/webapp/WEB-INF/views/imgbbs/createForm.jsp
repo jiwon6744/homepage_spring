@@ -11,6 +11,12 @@
 <link href="${pageContext.request.contextPath }/assets/css/main.css" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="${pageContext.request.contextPath}/ckeditor/ckeditor.js"></script>
+<script type="text/JavaScript">
+	window.onload=function(){
+		CKEDITOR.replace('content');  // <TEXTAREA>태그 id 값
+	};
+</script>
 <script type="text/javascript">
 	function incheck(f) {
 		if (f.name.value == "") {
@@ -23,10 +29,10 @@
 			f.title.focus();
 			return false;
 		}
-		if (f.content.value == "") {
-			alert("내용을 입력하세요");
-			f.content.focus();
-			return false;
+		if (CKEDITOR.instances['content'].getData() == '') {
+		      window.alert('내용을 입력해 주세요.');
+		      CKEDITOR.instances['content'].focus();
+		      return false;
 		}
 		if (f.passwd.value == "") {
 			alert("비밀번호을 입력하세요");
