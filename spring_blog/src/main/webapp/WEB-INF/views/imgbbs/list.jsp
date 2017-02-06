@@ -53,9 +53,7 @@
 						<c:if test="${col=='title' }">selected='selected'></c:if>>제목</option>
 					<option value="content"
 						<c:if test="${col=='content' }">selected='selected'></c:if>>내용</option>
-					<option value="total"
-						<c:if test="${col=='total' }">selected='selected'></c:if>>전체출력</option>
-
+					<option value="total">전체출력</option>
 				</SELECT> <input type="text" name="word" value='${word }'> <input
 					type="submit" value="검색" class="button"> <input
 					type="button" value="등록" class="button"

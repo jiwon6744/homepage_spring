@@ -1,11 +1,11 @@
 package spring.sts.blog;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -153,15 +153,25 @@ public class ImgBbsController {
 		ImgbbsDTO dto = dao.read(no);
 		String content = dto.getContent();
 		content = content.replaceAll("\r\n", "<br>");
-		List list = dao.imgRead(no);
-		String[] files = (String[]) list.get(0);
-		int[] noArr = (int[]) list.get(1);
-
+		Map map = dao.imgRead(no);
+		String[] files = {
+				((String)map.get("PRE_FILE2")),
+				((String)map.get("PRE_FILE1")),
+				((String)map.get("FILENAME")),
+				((String)map.get("NEX_FILE1")),
+				((String)map.get("NEX_FILE2"))
+				};
+		BigDecimal[] noArr = {
+				((BigDecimal)map.get("PRE_NO2")), 
+				((BigDecimal)map.get("PRE_NO1")),
+				((BigDecimal)map.get("NO")),
+				((BigDecimal)map.get("NEX_NO1")),
+				((BigDecimal)map.get("NEX_NO2"))
+				};
 		model.addAttribute("noArr", noArr);
-		model.addAttribute("files", files);
-		model.addAttribute("list", list);
 		model.addAttribute("dto", dto);
 		model.addAttribute("no", no);
+		model.addAttribute("files", files);
 		model.addAttribute("dto", dto);
 		return "/imgbbs/read";
 	}
@@ -189,7 +199,6 @@ public class ImgBbsController {
 		map.put("sno", sno);
 		map.put("eno", eno);
 
-		ImgbbsDAO dao = new ImgbbsDAO();
 		List<ImgbbsDTO> list = dao.list(map);
 		int total = dao.total(col, word);
 

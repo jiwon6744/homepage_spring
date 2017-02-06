@@ -4,4 +4,134 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="imgbbs">
+	<select id="imgRead" parameterType="int" resultType="Map">
+		SELECT * FROM
+		(
+		select
+		lag(no,2) over (order by no) as pre_no2,
+		lag(no,1) over (order by no ) as pre_no1,
+		no,
+		lead(no,1) over (order by no) as nex_no1,
+		lead(no,2) over (order by no) as nex_no2,
+		lag(filename,2) over (order by no) as pre_file2,
+		lag(filename,1) over (order by no) as pre_file1,
+		filename,
+		lead(filename,1) over (order by no) as nex_file1,
+		lead(filename,2) over (order by no) as nex_file2
+		from (
+		SELECT no, filename
+		FROM imgbbs
+		ORDER BY no DESC
+		)
+		)
+		WHERE no = #{no}
+	</select>
+	<select id="checkRefno" parameterType="int" resultType="int">
+		SELECT
+		count(refno) FROM imgbbs
+		WHERE refno = #{no}
+	</select>
+	<select id="passCheck" parameterType="Map" resultType="int">
+		SELECT
+		COUNT(no) as cnt
+		FROM imgbbs
+		WHERE no = #{no} AND passwd = #{passwd}
+	</select>
+	<delete id="delete" parameterType="int">
+		DELETE FROM imgbbs
+		WHERE no =
+		#{no}
+	</delete>
+	<update id="update" parameterType="ImgbbsDTO">
+		UPDATE imgbbs
+		SET name=
+		#{name}, title= #{title}, content= #{content},
+		filename=
+		#{filename}
+		WHERE no = #{no}
+	</update>
+	<select id="readReply" parameterType="int" resultType="ImgbbsDTO">
+		SELECT no,
+		title, grpno, indent, ansnum
+		FROM imgbbs
+		WHERE no = #{no}
+	</select>
+	<insert id="createreply" parameterType="ImgbbsDTO">
+		INSERT INTO imgbbs(no,
+		name, title, content, passwd, wdate, grpno, indent, ansnum, refno,
+		filename, filesize)
+		VALUES((SELECT NVL(MAX(no), 0)+ 1 as no FROM
+		imgbbs), #{name}, #{title}, #{content},
+		#{passwd}, sysdate, #{grpno},
+		#{indent}+1, #{ansnum}+1, #{no},
+		#{filename}, #{filesize})
+	</insert>
+	<insert id="create" parameterType="ImgbbsDTO">
+		INSERT INTO imgbbs(no, name,
+		title, content, passwd, wdate, filename, filesize, grpno )
+		VALUES((SELECT NVL(MAX(no), 0) + 1 as no FROM imgbbs), #{name},
+		#{title}, #{content}, #{passwd}, sysdate, #{filename}, #{filesize},
+		(SELECT NVL(MAX(grpno), 0) + 1 as grpno FROM imgbbs))
+	</insert>
+	<update id="addAnsnum" parameterType="Map">
+		UPDATE imgbbs
+		SET ansnum =
+		ansnum + 1
+		WHERE grpno= #{grpno} AND ansnum > #{ansnum}
+	</update>
+	<update id="upViewcnt" parameterType="int">
+		UPDATE imgbbs
+		SET viewcnt =
+		viewcnt + 1
+		WHERE no = #{no}
+	</update>
+	<select id="total" parameterType="Map" resultType="int">
+		SELECT count(*) FROM imgbbs
+		<where>
+			<if test="col=='name'">
+				name like '%'||#{word}||'%'
+			</if>
+			<if test="col=='title'">
+				title like '%'||#{word}||'%'
+			</if>
+			<if test="col=='content'">
+				content like '%'||#{word}||'%'
+			</if>
+		</where>
+	</select>
+	<select id="read" parameterType="int" resultType="ImgbbsDTO">
+		SELECT no,
+		name, title, content, viewcnt, to_char(wdate, 'yyyy-mm-dd') wdate,
+		filename, filesize
+		FROM imgbbs
+		WHERE no = #{no}
+	</select>
+	<select id="list" parameterType="Map" resultType="ImgbbsDTO">
+		SELECT no, name, title, viewcnt, to_char(wdate, 'yyyy-mm-dd') wdate,
+		filename, indent, r
+		FROM(
+		SELECT no, name, title, viewcnt, wdate,
+		filename, indent, rownum r
+		FROM(
+		SELECT no, name, title, viewcnt, wdate,
+		filename, indent
+		FROM imgbbs
+		<where>
+			<if test="col=='name'">
+				name like '%'||#{word}||'%'
+			</if>
+			<if test="col=='title'">
+				title like '%'||#{word}||'%'
+			</if>
+			<if test="col=='content'">
+				content like '%'||#{word}||'%'
+			</if>
+		</where>
+		ORDER BY grpno DESC, ansnum ASC
+		)
+		)                                                                        
+			 <![CDATA[
+				 WHERE r >= #{sno} AND r <= #{eno}
+			 ]]>
+	</select>
 </mapper>
