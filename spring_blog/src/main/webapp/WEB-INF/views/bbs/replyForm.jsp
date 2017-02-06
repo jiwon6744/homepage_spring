@@ -5,13 +5,19 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-</head>
+<script type="text/javascript" src="${pageContext.request.contextPath}/ckeditor/ckeditor.js"></script>
+<script type="text/JavaScript">
+	window.onload=function(){
+		CKEDITOR.replace('content');
+	};
+</script>
 <link rel="shortcut icon"href="${pageContext.request.contextPath }/assets/ico/favicon.png">
 <link rel="stylesheet"href="${pageContext.request.contextPath }/assets/css/font-awesome.min.css">
 <link href="${pageContext.request.contextPath }/assets/css/bootstrap.css"rel="stylesheet">
 <link href="${pageContext.request.contextPath }/assets/css/main.css"rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic'rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+</head>
 <body>
 <div id ="w">
 	<div class="title"><h3>게시판 답변</h3></div>

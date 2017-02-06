@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title></title>
@@ -11,6 +12,12 @@
 <link href="${pageContext.request.contextPath }/assets/css/main.css"rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic'rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="${pageContext.request.contextPath}/ckeditor/ckeditor.js"></script>
+<script type="text/JavaScript">
+	window.onload=function(){
+		CKEDITOR.replace('content');  // <TEXTAREA>태그 id 값
+	};
+</script>
 <script type="text/javascript">
 	function input(frm) {
 		if (frm.wname.value == "" && frm.title.value == ""
@@ -26,10 +33,10 @@
 			alert("제목을 입력해주세요.");
 			frm.title.focus();
 			return false;
-		} else if (frm.content.value == "") {
-			alert("내용을 입력해주세요.");
-			frm.content.focus();
-			return false;
+		} else if (CKEDITOR.instances['content'].getData() == '') {
+		      window.alert('내용을 입력해 주세요.');
+		      CKEDITOR.instances['content'].focus();
+		      return false;
 		} else if (frm.passwd.value == "") {
 			alert("비밀번호를 입력해주세요.");
 			frm.passwd.focus();
