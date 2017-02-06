@@ -4,13 +4,19 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-</head>
 <link rel="shortcut icon" href="${pageContext.request.contextPath }/assets/ico/favicon.png">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/font-awesome.min.css">
 <link href="${pageContext.request.contextPath }/assets/css/bootstrap.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath }/assets/css/main.css" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="${pageContext.request.contextPath}/ckeditor/ckeditor.js"></script>
+<script type="text/JavaScript">
+	window.onload=function(){
+		CKEDITOR.replace('content');  // <TEXTAREA>태그 id 값
+	};
+</script>
+</head>
 <body>
 <div id ="w">
 	<div class="title"><h3>메모 수정</h3></div>
@@ -39,6 +45,7 @@
 		</table>
 		<div class="bottom">
 			<input type="submit" class="button" value="수정">
+			<input type="button" class="button" value="뒤로가기" onclick="location.href='./list'">>
 		</div>
 	</form>
 	</div>

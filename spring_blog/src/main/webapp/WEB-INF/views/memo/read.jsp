@@ -55,8 +55,7 @@
 				<td class="table-bordered td">${dto.title }</td>
 			</tr>
 			<tr>
-				<th class="table-bordered th">내용</th>
-				<td class="table-bordered td">${dto.content }</td>
+				<td colspan="2" class="table-bordered td">${dto.content }</td>
 			</tr>
 			<tr>
 				<th class="table-bordered th">조회수</th>
