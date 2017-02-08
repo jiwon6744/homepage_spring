@@ -57,14 +57,15 @@ hr {
 	//댓글관련자바스크립트 시작
 	function rcheck(tarea) {
 		if ('${sessionScope.id}' == "") {
-			if (confirm("로그인후 댓글를 쓰세요")) {
+			if (confirm("로그인후 댓글을 쓰세요")) {
 				var url = "../member/login";
-				url = url + "?memono=${dto.memono}";
+				url = url + "?no=${dto.memono}";
 				url = url + "&nowPage=${param.nowPage}";
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
 				url = url + "&bflag=../memo/read";
+				url = url + "&type=memo";
 				location.href = url;
 			} else {
 				tarea.blur();
@@ -73,18 +74,18 @@ hr {
 	}
 	function input(f) {
 		if ('${sessionScope.id}' == "") {
-			if (confirm("로그인후 댓글를 쓰세요")) {
+			if (confirm("로그인후 댓글을 쓰세요")) {
 				var url = "../member/login";
-				url = url + "?memono=${dto.memono}";
+				url = url + "?no=${dto.memono}";
 				url = url + "&nowPage=${param.nowPage}";
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
-				url = url + "&flag=../memo/read";
+				url = url + "&bflag=../memo/read";
+				url = url + "&type=memo";
 				location.href = url;
 				return false;
 			} else {
-
 				return false;
 			}
 		} else if (f.content.value == "") {

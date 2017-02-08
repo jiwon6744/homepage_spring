@@ -147,9 +147,12 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
-	public String login(String id, String passwd, String c_id, HttpSession session, HttpServletResponse response,
-			String bbsno, String nowPage, String nPage, String col, String word, String bflag, Model model) {
+	public String login(String id, String passwd, String c_id, HttpSession session, HttpServletRequest request, 
+			HttpServletResponse response,
+			String no, String nowPage, String nPage, String col, String word, String bflag, Model model, String type) {
 	
+		System.out.println("type:"+type);
+		System.out.println("bflag:"+bflag);
 		boolean flag = dao.loginCheck(id, passwd);
 		String grade = null; // 회원등급을 담을 변수
 
@@ -181,8 +184,11 @@ public class MemberController {
 				response.addCookie(cookie);
 			}
 			String url = "redirect:/";
-			if (bflag !=null && !bflag.equals("")) {
-				model.addAttribute("bbsno", bbsno);
+			if (bflag != null && !bflag.equals("")) {
+				if (type.equals("bbs"))
+					model.addAttribute("bbsno", no);
+				else if (type.equals("memo"))
+					model.addAttribute("memono", no);
 				model.addAttribute("nowPage", nowPage);
 				model.addAttribute("nPage", nPage);
 				model.addAttribute("col", col);

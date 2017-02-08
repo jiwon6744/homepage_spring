@@ -56,14 +56,15 @@ hr {
 	//댓글관련자바스크립트 시작
 	function rcheck(tarea) {
 		if ('${sessionScope.id}' == "") {
-			if (confirm("로그인후 댓글를 쓰세요")) {
+			if (confirm("로그인후 댓글을 쓰세요")) {
 				var url = "../member/login";
-				url = url + "?bbsno=${dto.bbsno}";
+				url = url + "?no=${dto.bbsno}";
 				url = url + "&nowPage=${param.nowPage}";
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
 				url = url + "&bflag=../bbs/read";
+				url = url + "&type=bbs";
 				location.href = url;
 			} else {
 				tarea.blur();
@@ -72,14 +73,15 @@ hr {
 	}
 	function input(f) {
 		if ('${sessionScope.id}' == "") {
-			if (confirm("로그인후 댓글를 쓰세요")) {
+			if (confirm("로그인후 댓글을 쓰세요")) {
 				var url = "../member/login";
-				url = url + "?bbsno=${dto.bbsno}";
+				url = url + "?no=${dto.bbsno}";
 				url = url + "&nowPage=${param.nowPage}";
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
-				url = url + "&flag=../bbs/read";
+				url = url + "&bflag=../bbs/read";
+				url = url + "&type=bbs";
 				location.href = url;
 				return false;
 			} else {
