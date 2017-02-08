@@ -319,12 +319,13 @@ public class Utility {
 	  * @param recordPerPage 댓글의 페이지당 레코드 수 
 	  * @param url 이동할 페이지 
 	  * @param bbsno bbs 글번호
+	  * @param no 파라미터 이름
 	  * @param nowPage bbs의 현재 페이지
 	  * @param col bbs의 검색컬럼
 	  * @param word bbs의 검색어
 	  * @return 페이징 생성 문자열
 	  */ 
-	 public static String paging(int totalRecord, int nPage, int recordPerPage,String url,int bbsno,int nowPage, String col, String word){ 
+	 public static String paging(int totalRecord, int nPage, int recordPerPage,String url,String no, int bbsno, int nowPage, String col, String word){ 
 	   int pagePerBlock = 10; // 블럭당 페이지 수 
 	   int totalPage = (int)(Math.ceil((double)totalRecord/recordPerPage)); // 전체 페이지  
 	   int totalGrp = (int)(Math.ceil((double)totalPage/pagePerBlock));// 전체 그룹 
@@ -370,7 +371,7 @@ public class Utility {
 	 
 	   int _nowPage = (nowGrp-1) * pagePerBlock; // 10개 이전 페이지로 이동 
 	   if (nowGrp >= 2){ 
-	     str.append("<span class='span_box_1'><A href='./"+url+"?nowPage="+nowPage+"&col="+col+"&word="+word+"&bbsno="+bbsno+"&nPage="+_nowPage+"'>이전</A></span>"); 
+	     str.append("<span class='span_box_1'><A href='./"+url+"?nowPage="+nowPage+"&col="+col+"&word="+word+"&"+no+"="+bbsno+"&nPage="+_nowPage+"'>이전</A></span>"); 
 	   } 
 	 
 	   for(int i=startPage; i<=endPage; i++){ 
@@ -381,13 +382,13 @@ public class Utility {
 	     if (nPage == i){ 
 	       str.append("<span class='span_box_2'>"+i+"</span>"); 
 	     }else{ 
-	       str.append("<span class='span_box_1'><A href='./"+url+"?nowPage="+nowPage+"&col="+col+"&word="+word+"&bbsno="+bbsno+"&nPage="+i+"'>"+i+"</A></span>");   
+	       str.append("<span class='span_box_1'><A href='./"+url+"?nowPage="+nowPage+"&col="+col+"&word="+word+"&"+no+"="+bbsno+"&nPage="+i+"'>"+i+"</A></span>");   
 	     } 
 	   } 
 	    
 	   _nowPage = (nowGrp * pagePerBlock)+1; // 10개 다음 페이지로 이동 
 	   if (nowGrp < totalGrp){ 
-	     str.append("<span class='span_box_1'><A href='./"+url+"?nowPage="+nowPage+"&col="+col+"&word="+word+"&bbsno="+bbsno+"&nPage="+_nowPage+"'>다음</A></span>"); 
+	     str.append("<span class='span_box_1'><A href='./"+url+"?nowPage="+nowPage+"&col="+col+"&word="+word+"&"+no+"="+bbsno+"&nPage="+_nowPage+"'>다음</A></span>"); 
 	   } 
 	   str.append("</DIV>"); 
 	    

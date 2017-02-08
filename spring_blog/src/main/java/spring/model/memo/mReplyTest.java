@@ -19,9 +19,9 @@ public class mReplyTest {
 		mReplyDAO dao = (mReplyDAO) beans.getBean("rdao");
 
 		// create(dao);
-		// read(dao);
+//		 read(dao);
 		// update(dao);
-		// list(dao);
+		 list(dao);
 		// delete(dao);
 		// total(dao);
 

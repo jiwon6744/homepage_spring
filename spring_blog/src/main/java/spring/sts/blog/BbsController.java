@@ -191,6 +191,7 @@ public class BbsController {
 
 		/* 댓글 관련 시작 */
 		String url = "read";
+		String no = "bbsno";
 		int nPage = 1; // 시작 페이지 번호는 1부터
 
 		if (request.getParameter("nPage") != null) {
@@ -210,7 +211,7 @@ public class BbsController {
 
 		int total = rdao.total(bbsno);
 
-		String paging = Utility.paging(total, nPage, recordPerPage, url, bbsno, nowPage, col, word);
+		String paging = Utility.paging(total, nPage, recordPerPage, url, no, bbsno, nowPage, col, word);
 
 		model.addAttribute("rlist", list);
 		model.addAttribute("paging", paging);
