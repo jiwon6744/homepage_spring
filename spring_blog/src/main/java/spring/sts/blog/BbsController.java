@@ -14,12 +14,72 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import spring.model.bbs.BbsDAO;
 import spring.model.bbs.BbsDTO;
+import spring.model.bbs.ReplyDAO;
+import spring.model.bbs.ReplyDTO;
 import spring.utility.blog.Utility;
 
 @Controller
 public class BbsController {
 	@Autowired
 	private BbsDAO dao;
+	@Autowired
+	private ReplyDAO rdao;
+
+	@RequestMapping("/bbs/rdelete")
+	public String rdelete(int rnum, int bbsno, int nowPage, int nPage, String col, String word, Model model) {
+
+		int total = rdao.total(bbsno);// 댓글전체레코드값을 가져와서
+		int totalPage = (int) (Math.ceil((double) total / 3)); // 전체 페이지
+		if (rdao.delete(rnum)) {
+			if (nPage != 1 && nPage == totalPage && total % 3 == 1) {// 마지막페이지의
+																		// 마지막레코드이면(3은
+																		// 한페이지당보여줄
+																		// 레코드
+																		// 갯수)
+				nPage = nPage - 1; // 현재의 페이지값에서 1을 빼자
+			}
+			model.addAttribute("bbsno", bbsno);
+			model.addAttribute("nowPage", nowPage);
+			model.addAttribute("nPage", nPage);
+			model.addAttribute("col", col);
+			model.addAttribute("word", word);
+
+		} else {
+			return "error/error";
+		}
+
+		return "redirect:./read";
+	}
+
+	@RequestMapping("/bbs/rupdate")
+	public String rupdate(ReplyDTO dto, int nowPage, int nPage, String col, String word, Model model) {
+		if (rdao.update(dto)) {
+			model.addAttribute("bbsno", dto.getBbsno());
+			model.addAttribute("nowPage", nowPage);
+			model.addAttribute("nPage", nPage);
+			model.addAttribute("col", col);
+			model.addAttribute("word", word);
+		} else {
+			return "error/error";
+		}
+
+		return "redirect:./read";
+	}
+
+	@RequestMapping("/bbs/rcreate")
+	public String rcreate(ReplyDTO dto, int nowPage, String col, String word, Model model) {
+
+		if (rdao.create(dto)) {
+			model.addAttribute("bbsno", dto.getBbsno());
+			model.addAttribute("nowPage", nowPage);
+			model.addAttribute("col", col);
+			model.addAttribute("word", word);
+		} else {
+			return "error/error";
+		}
+
+		return "redirect:./read";
+	}
 
 	@RequestMapping(value = "/bbs/delete", method = RequestMethod.POST)
 	public String delete(int bbsno, String passwd, Model model, String oldfile, String col, String word, String nowPage,
@@ -121,13 +181,43 @@ public class BbsController {
 	}
 
 	@RequestMapping("/bbs/read")
-	public String read(int bbsno, Model model) {
+	public String read(int nowPage, String col, String word, int bbsno, Model model, HttpServletRequest request) {
 		dao.upViewcnt(bbsno);
 		BbsDTO dto = dao.read(bbsno);
 		String content = "";
 		content = dto.getContent().replaceAll("\r\n", "<br>");
 		dto.setContent(content);
 		model.addAttribute("dto", dto);
+
+		/* 댓글 관련 시작 */
+		String url = "read";
+		int nPage = 1; // 시작 페이지 번호는 1부터
+
+		if (request.getParameter("nPage") != null) {
+			nPage = Integer.parseInt(request.getParameter("nPage"));
+		}
+		int recordPerPage = 3; // 한페이지당 출력할 레코드 갯수
+
+		int sno = ((nPage - 1) * recordPerPage) + 1; //
+		int eno = nPage * recordPerPage;
+
+		Map map = new HashMap();
+		map.put("sno", sno);
+		map.put("eno", eno);
+		map.put("bbsno", bbsno);
+
+		List<ReplyDTO> list = rdao.list(map);
+
+		int total = rdao.total(bbsno);
+
+		String paging = Utility.paging(total, nPage, recordPerPage, url, bbsno, nowPage, col, word);
+
+		model.addAttribute("rlist", list);
+		model.addAttribute("paging", paging);
+		model.addAttribute("nPage", nPage);
+
+		/* 댓글 관련 끝 */
+
 		return "/bbs/read";
 	}
 

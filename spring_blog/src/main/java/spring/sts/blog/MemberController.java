@@ -147,7 +147,9 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
-	public String login(String id, String passwd, String c_id, HttpSession session, HttpServletResponse response) {
+	public String login(String id, String passwd, String c_id, HttpSession session, HttpServletResponse response,
+			String bbsno, String nowPage, String nPage, String col, String word, String bflag, Model model) {
+	
 		boolean flag = dao.loginCheck(id, passwd);
 		String grade = null; // 회원등급을 담을 변수
 
@@ -178,7 +180,16 @@ public class MemberController {
 				cookie.setMaxAge(0);
 				response.addCookie(cookie);
 			}
-			return "redirect:../";
+			String url = "redirect:/";
+			if (bflag !=null && !bflag.equals("")) {
+				model.addAttribute("bbsno", bbsno);
+				model.addAttribute("nowPage", nowPage);
+				model.addAttribute("nPage", nPage);
+				model.addAttribute("col", col);
+				model.addAttribute("word", word);
+				url = "redirect:" + bflag;
+			}
+			return url;
 		} else {
 			return "member/idPwError";
 		}

@@ -16,6 +16,12 @@
 <div id="w">
 	<div class="title"><h3>로그인</h3></div>
 	<form name='frm' method='POST' action='${pageContext.request.contextPath }/member/login'>
+	  <input type="hidden" name="bflag" value="${param.bflag}">
+	  <input type="hidden" name="bbsno" value="${param.bbsno}">
+	  <input type="hidden" name="nowPage" value="${param.nowPage}">
+	  <input type="hidden" name="nPage" value="${param.nPage}">
+	  <input type="hidden" name="col" value="${param.col}">
+	  <input type="hidden" name="word" value="${param.word}">
 		<table>
 			<tr>
 				<th>아이디</th>
