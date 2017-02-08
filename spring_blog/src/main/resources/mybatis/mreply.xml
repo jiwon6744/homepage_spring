@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mreply">
+	<insert id="create" parameterType="mReplyDTO">
+		<selectKey keyProperty="rnum" resultType="int" order="BEFORE">
+			select nvl(max(rnum),0)+1 from mreply
+		</selectKey>
+		insert into mreply(rnum, content, regdate, id, memono)
+		values(#{rnum}, #{content}, sysdate, #{id}, #{memono})
+	</insert>
+
+	<select id="read" parameterType="int" resultType="mReplyDTO">
+		select * from mreply
+		where rnum = #{rnum}
+	</select>
+
+	<update id="update" parameterType="mReplyDTO">
+		update mreply
+		set content = #{content}
+		where rnum = #{rnum}
+
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from mreply
+		where rnum = #{rnum}
+	</delete>
+	<delete id="bdelete" parameterType="int">
+		delete from mreply
+		where memono = #{memono}
+	</delete>
+	<select id="list" parameterType="Map" resultType="mReplyDTO">
+		select rnum, content, to_char(regdate,'yyyy-mm-dd') regdate, id,
+		memono, r
+		FROM(
+			select rnum, content, regdate, id, memono, rownum r
+			FROM(
+				select rnum, content, regdate, id, memono
+				from mreply
+				where memono = #{memono}
+				order by rnum DESC
+			)
+			<![CDATA[
+			)WHERE r >= #{sno} and r <= #{eno}
+			]]>
+	</select>
+	<select id="total" resultType="int" parameterType="int">
+		select count(*) from mreply
+		where memono=#{memono}
+	</select>
+</mapper>
