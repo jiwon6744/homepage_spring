@@ -12,10 +12,12 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import spring.model.bbs.ReplyDAO;
+import spring.model.IReplyDAO;
+import spring.model.memo.mReplyDAO;
 
 public class Utility {
-    public static int rcount(int bbsno,ReplyDAO rdao){
+	
+    public static int rcount(int bbsno,IReplyDAO rdao){
         return rdao.rcount(bbsno);
    }
 	public static String getCodeValue(String code) {

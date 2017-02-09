@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import spring.model.IReplyDAO;
 import spring.model.bbs.BbsDAO;
 import spring.model.bbs.BbsDTO;
 import spring.model.bbs.ReplyDAO;
@@ -285,7 +286,8 @@ public class BbsController {
 		request.setAttribute("list", list);
 	   // list.jsp에서 댓글 갯수 가져올 <util:rcount(num,rdao)>에서 사용할 
 	   // rdao(ReplyDAO)의 값을 request 객체에 담는다.
-		request.setAttribute("rdao", rdao); 
+		IReplyDAO idao = rdao;
+		request.setAttribute("idao", idao); 
 		return "/bbs/list";
 	}
 }

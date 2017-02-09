@@ -7,8 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import spring.model.IReplyDAO;
+
 @Repository
-public class ReplyDAO {
+public class ReplyDAO implements IReplyDAO{
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;

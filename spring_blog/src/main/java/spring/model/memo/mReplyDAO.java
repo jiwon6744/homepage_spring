@@ -16,7 +16,11 @@ public class mReplyDAO {
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
-
+	
+	public int rcount(int memono){
+	    return sqlSessionTemplate.selectOne("reply.rcount", memono);
+	}
+	
 	public boolean create(mReplyDTO dto) {
 		boolean flag = false;
 

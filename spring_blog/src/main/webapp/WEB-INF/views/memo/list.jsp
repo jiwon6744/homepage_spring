@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="util" uri="/ELFunctions" %>
 
 <!DOCTYPE html>
 <html>
@@ -72,7 +73,11 @@
 				<c:forEach items="${list }" var="dto">
 					<tr>
 						<td class="table-bordered td">${dto.memono}</td>
+						<c:set var="rcount" value="${util:rcount(dto.memono,rdao) }"/>
 						<td class="table-bordered td"><a href="javascript:read('${dto.memono}')"> ${dto.title}</a></td>
+						<c:if test="${rcount>0 }">
+			            	<span style="color:red;">(${rcount})</span>
+			          	</c:if>
 						<td class="table-bordered td">${dto.wdate}</td>
 						<td class="table-bordered td">${dto.viewcnt}</td>
 					</tr>

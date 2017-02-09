@@ -88,9 +88,11 @@
 								<c:if test="${dto.indent>0 }">
 									<img src="${pageContext.request.contextPath }/images/reply-back.png" width="5%">
 								</c:if> 
-								
-								<a href="javascript:read('${dto.bbsno }')"> ${dto.title }</a>
-								
+								<c:set var="rcount" value="${util:rcount(dto.bbsno,idao) }"/>
+								<a href="javascript:read('${dto.bbsno }')"> ${dto.title }</a> 
+						        <c:if test="${rcount>0 }">
+					  	          <span style="color:black;">(${rcount})</span>
+						        </c:if>
 								<c:if test="${util:newImg(fn:substring(dto.wdate,0,10)) }">
 								<img src="${pageContext.request.contextPath }/images/new.gif">
 								</c:if>
