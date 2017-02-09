@@ -287,7 +287,7 @@ public class BbsController {
 	   // list.jsp에서 댓글 갯수 가져올 <util:rcount(num,rdao)>에서 사용할 
 	   // rdao(ReplyDAO)의 값을 request 객체에 담는다.
 		IReplyDAO idao = rdao;
-		request.setAttribute("idao", idao); 
+		request.setAttribute("idao", idao);
 		return "/bbs/list";
 	}
 }
