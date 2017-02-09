@@ -64,8 +64,8 @@ hr {
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
+				url = url + "&type=memono";
 				url = url + "&bflag=../memo/read";
-				url = url + "&type=memo";
 				location.href = url;
 			} else {
 				tarea.blur();
@@ -81,8 +81,8 @@ hr {
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
+				url = url + "&type=memono";
 				url = url + "&bflag=../memo/read";
-				url = url + "&type=memo";
 				location.href = url;
 				return false;
 			} else {

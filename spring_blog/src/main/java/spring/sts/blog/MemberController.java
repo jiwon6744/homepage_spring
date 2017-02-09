@@ -151,8 +151,6 @@ public class MemberController {
 			HttpServletResponse response,
 			String no, String nowPage, String nPage, String col, String word, String bflag, Model model, String type) {
 	
-		System.out.println("type:"+type);
-		System.out.println("bflag:"+bflag);
 		boolean flag = dao.loginCheck(id, passwd);
 		String grade = null; // 회원등급을 담을 변수
 
@@ -185,10 +183,10 @@ public class MemberController {
 			}
 			String url = "redirect:/";
 			if (bflag != null && !bflag.equals("")) {
-				if (type.equals("bbs"))
-					model.addAttribute("bbsno", no);
-				else if (type.equals("memo"))
-					model.addAttribute("memono", no);
+//				if (type.equals("bbs"))
+				model.addAttribute(type, no);
+//				else if (type.equals("memo"))
+//					model.addAttribute("memono", no);
 				model.addAttribute("nowPage", nowPage);
 				model.addAttribute("nPage", nPage);
 				model.addAttribute("col", col);

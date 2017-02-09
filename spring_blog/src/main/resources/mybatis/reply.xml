@@ -5,6 +5,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="reply">
+	 <select id="rcount" parameterType="int" resultType="int">
+	     SELECT count(*) FROM reply
+	     WHERE bbsno = #{bbsno}
+    </select>
+
 	<insert id="create" parameterType="replyDTO">
 		<selectKey keyProperty="rnum" resultType="int" order="BEFORE">
 			select nvl(max(rnum),0)+1 from reply

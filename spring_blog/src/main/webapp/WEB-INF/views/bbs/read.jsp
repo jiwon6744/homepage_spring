@@ -63,8 +63,8 @@ hr {
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
+				url = url + "&type=bbsno";
 				url = url + "&bflag=../bbs/read";
-				url = url + "&type=bbs";
 				location.href = url;
 			} else {
 				tarea.blur();
@@ -80,8 +80,8 @@ hr {
 				url = url + "&nPage=${nPage}";
 				url = url + "&col=${param.col}";
 				url = url + "&word=${param.word}";
+				url = url + "&type=bbsno";
 				url = url + "&bflag=../bbs/read";
-				url = url + "&type=bbs";
 				location.href = url;
 				return false;
 			} else {

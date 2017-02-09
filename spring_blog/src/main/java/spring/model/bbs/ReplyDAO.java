@@ -17,6 +17,10 @@ public class ReplyDAO {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
 
+	public int rcount(int bbsno){
+	    return sqlSessionTemplate.selectOne("reply.rcount", bbsno);
+	}
+	
 	public boolean create(ReplyDTO dto) {
 		boolean flag = false;
 

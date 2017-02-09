@@ -1,4 +1,4 @@
-package spring.model.memo;
+               package spring.model.memo;
 
 public class mReplyDTO {
 	private int rnum;
