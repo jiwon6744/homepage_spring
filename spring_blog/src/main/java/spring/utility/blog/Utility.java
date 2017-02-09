@@ -12,7 +12,12 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import spring.model.bbs.ReplyDAO;
+
 public class Utility {
+    public static int rcount(int bbsno,ReplyDAO rdao){
+        return rdao.rcount(bbsno);
+   }
 	public static String getCodeValue(String code) {
 		String value = null;
 		Hashtable codes = new Hashtable();
