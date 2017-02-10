@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import spring.model.IReplyDAO;
 import spring.model.memo.MemoDAO;
 import spring.model.memo.MemoDTO;
+import spring.model.memo.MemoService;
 import spring.model.memo.mReplyDAO;
 import spring.model.memo.mReplyDTO;
 import spring.utility.blog.Utility;
@@ -26,6 +27,8 @@ public class MemoController {
 	private MemoDAO dao;
 	@Autowired
 	private mReplyDAO rdao;
+	@Autowired
+	private MemoService service;
 
 	@RequestMapping("/memo/rdelete")
 	public String rdelete(int rnum, int memono, int nowPage, int nPage, String col, String word, Model model) {
@@ -86,14 +89,20 @@ public class MemoController {
 
 	@RequestMapping(value = "/memo/delete", method = RequestMethod.GET)
 	public String delete(int memono, MemoDTO dto, Model model, String nowPage, String col, String word) {
-		if (dao.delete(memono)) {
+		String url = "error";
+		try {
+			service.delete(memono);
 			model.addAttribute("nowPage", nowPage);
 			model.addAttribute("col", col);
 			model.addAttribute("word", word);
-			return "redirect:./list";
-		} else {
-			return "error";
+			url = "redirect:./list";
+			return url;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			url = "error";
 		}
+		return url;
 	}
 
 	@RequestMapping(value = "/memo/update", method = RequestMethod.POST)
@@ -144,8 +153,6 @@ public class MemoController {
 		map.put("memono", memono);
 		 
 		List<mReplyDTO> list = rdao.list(map);
-		System.out.println("askjdajslkdkjsaldljasdl" + list.size());
-		 
 		int total = rdao.total(memono);
 		 
 		String paging = Utility.paging(total, nPage, recordPerPage, url, no, memono, nowPage, col,word);
