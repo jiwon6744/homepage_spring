@@ -7,8 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import spring.model.IReplyDAO;
+
 @Repository
-public class mReplyDAO {
+public class mReplyDAO implements IReplyDAO{
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
@@ -18,7 +20,7 @@ public class mReplyDAO {
 	}
 	
 	public int rcount(int memono){
-	    return sqlSessionTemplate.selectOne("reply.rcount", memono);
+	    return sqlSessionTemplate.selectOne("mreply.rcount", memono);
 	}
 	
 	public boolean create(mReplyDTO dto) {

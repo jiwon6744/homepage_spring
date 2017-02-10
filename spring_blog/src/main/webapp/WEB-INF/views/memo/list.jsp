@@ -73,11 +73,13 @@
 				<c:forEach items="${list }" var="dto">
 					<tr>
 						<td class="table-bordered td">${dto.memono}</td>
-						<c:set var="rcount" value="${util:rcount(dto.memono,rdao) }"/>
-						<td class="table-bordered td"><a href="javascript:read('${dto.memono}')"> ${dto.title}</a></td>
+						<td class="table-bordered td">
+						<c:set var="rcount" value="${util:rcount(dto.memono,idao) }"/>
+						<a href="javascript:read('${dto.memono}')"> ${dto.title}</a>
 						<c:if test="${rcount>0 }">
-			            	<span style="color:red;">(${rcount})</span>
+			            	<span style="color:black;">(${rcount})</span>
 			          	</c:if>
+			          	</td>
 						<td class="table-bordered td">${dto.wdate}</td>
 						<td class="table-bordered td">${dto.viewcnt}</td>
 					</tr>

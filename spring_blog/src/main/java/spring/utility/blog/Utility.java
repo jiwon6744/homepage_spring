@@ -17,8 +17,8 @@ import spring.model.memo.mReplyDAO;
 
 public class Utility {
 	
-    public static int rcount(int bbsno,IReplyDAO rdao){
-        return rdao.rcount(bbsno);
+    public static int rcount(int no, IReplyDAO rdao){
+        return rdao.rcount(no);
    }
 	public static String getCodeValue(String code) {
 		String value = null;
