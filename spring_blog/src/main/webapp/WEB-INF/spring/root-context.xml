@@ -29,7 +29,7 @@
 	</tx:advice>
 	
 	<aop:config>
-	    <aop:pointcut id="transactionPointcut" expression="execution(* spring.model.bbs.*Service.*(..))"/>
+	    <aop:pointcut id="transactionPointcut" expression="execution(* spring.model.*.*Service.*(..))"/>
 	    <!-- *Service.*(..)) 모든 서비스의 모든 메소드 -->
 	    <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionPointcut" />
 	</aop:config>
