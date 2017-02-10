@@ -9,7 +9,7 @@ public class BbsService {
         private BbsDAO dao;
        @Autowired
         private ReplyDAO rdao;
- 
+       
       public void delete(int bbsno) throws Exception{
              rdao.bdelete(bbsno); // 댓글들 삭제(자식레코드)
              dao.delete(bbsno); // 댓글을 가진 부모글 삭제(부모레코드)

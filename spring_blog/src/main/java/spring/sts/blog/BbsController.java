@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import spring.model.IReplyDAO;
 import spring.model.bbs.BbsDAO;
 import spring.model.bbs.BbsDTO;
+import spring.model.bbs.BbsService;
 import spring.model.bbs.ReplyDAO;
 import spring.model.bbs.ReplyDTO;
 import spring.utility.blog.Utility;
@@ -25,6 +26,8 @@ public class BbsController {
 	private BbsDAO dao;
 	@Autowired
 	private ReplyDAO rdao;
+	@Autowired
+	private BbsService service; //추가
 
 	@RequestMapping("/bbs/rdelete")
 	public String rdelete(int rnum, int bbsno, int nowPage, int nPage, String col, String word, Model model) {
@@ -90,16 +93,22 @@ public class BbsController {
 		map.put("bbsno", bbsno);
 		map.put("passwd", passwd);
 		boolean pflag = dao.passCheck(map);
+		String url = "passwdError";
 		if (pflag) {
-			if (dao.delete(bbsno))
+			try {
+				service.delete(bbsno);
 				Utility.deleteFile(upDir, oldfile);
-			model.addAttribute("nowPage", nowPage);
-			model.addAttribute("col", col);
-			model.addAttribute("word", word);
-			return "redirect:./list";
-		} else {
-			return "passwdError";
-		}
+				model.addAttribute("nowPage", nowPage);
+				model.addAttribute("col", col);
+				model.addAttribute("word", word);
+				url = "redirect:./list";
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				url = "error";
+			}
+		} 
+		return url;
 	}
 
 	@RequestMapping(value = "/bbs/delete", method = RequestMethod.GET)
