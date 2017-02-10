@@ -2,9 +2,43 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd"
+	>
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- Transaction Manager -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	   <tx:attributes>
+	      <tx:method name="delete" rollback-for="Exception"/>
+	   </tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+	    <aop:pointcut id="transactionPointcut" expression="execution(* spring.model.bbs.*Service.*(..))"/>
+	    <!-- *Service.*(..)) 모든 서비스의 모든 메소드 -->
+	    <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionPointcut" />
+	</aop:config>
+	 <context:component-scan base-package="spring.model.*" use-default-filters="false"> 
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+	</context:component-scan> 
+	
+	
 	<bean id="dataSource" 
 		destroy-method="close"
 		class="org.apache.commons.dbcp.BasicDataSource" 
@@ -13,7 +47,7 @@
 		p:username="soldesk"  
 		p:password="1234"  
 	/>
-	
+	<!--  무슨 DB를 이용하는지 무슨 드라이버인지 이름 경로 이름 비밀번호 등이 적혀 있음->dataSource -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	   <property name="dataSource" ref="dataSource" />
 	   <!-- 아래부분은 매핑할 xml파일이 있는 패키지경로를 설정한다. -->

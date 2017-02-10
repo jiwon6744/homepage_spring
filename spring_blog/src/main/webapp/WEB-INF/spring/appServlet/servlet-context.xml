@@ -18,7 +18,7 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
+	<!-- 어노테이션을 이용해서 객체생성 -->
 	<context:component-scan base-package="spring.model.*" />
 	<context:component-scan base-package="spring.sts.blog" />
 </beans:beans>
