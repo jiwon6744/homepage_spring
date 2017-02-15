@@ -13,6 +13,10 @@ public class BbsDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+	public void setSqlSession(SqlSessionTemplate sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+
 	public boolean create(BbsDTO dto) {
 		boolean flag = false;
 		int cnt = sqlSession.insert("bbs.create", dto);
