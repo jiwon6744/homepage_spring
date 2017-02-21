@@ -30,4 +30,7 @@
 	<!-- BbsDAO 객체 생성 -->
 	<bean id="bdao" class="spring.model.bbs.BbsDAO"
 		p:sqlSession-ref="sqlSession" />
+	
+	<bean id="mdao" class="spring.model.memo.MemoDAO"
+		p:sqlSession-ref="sqlSession"/>
 </beans>
